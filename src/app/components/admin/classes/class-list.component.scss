@@ -1,0 +1,45 @@
+.class-list-container {
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h2 {
+    margin: 0;
+    color: #333;
+  }
+}
+
+.filters {
+  margin-bottom: 16px;
+
+  mat-form-field {
+    width: 300px;
+  }
+}
+
+.table-container {
+  .full-width {
+    width: 100%;
+  }
+
+  mat-paginator {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .filters mat-form-field {
+    width: 100%;
+  }
+}

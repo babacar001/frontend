@@ -1,0 +1,145 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Modifier' : 'Créer' }} un Élève</h2>
+
+<form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="form-sections">
+      <!-- Informations Élève -->
+      <mat-card class="form-section">
+        <mat-card-header>
+          <mat-card-title>Informations de l'Élève</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Nom complet</mat-label>
+              <input matInput formControlName="name" required>
+              <mat-error *ngIf="studentForm.get('name')?.hasError('required')">
+                Le nom est requis
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email" required>
+              <mat-error *ngIf="studentForm.get('email')?.hasError('required')">
+                L'email est requis
+              </mat-error>
+              <mat-error *ngIf="studentForm.get('email')?.hasError('email')">
+                Format d'email invalide
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Téléphone</mat-label>
+              <input matInput formControlName="phone">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Classe</mat-label>
+              <mat-select formControlName="class_id" required>
+                <mat-option *ngFor="let classe of classes" [value]="classe.id">
+                  {{ classe.name }} - {{ classe.level }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="studentForm.get('class_id')?.hasError('required')">
+                La classe est requise
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Adresse</mat-label>
+            <textarea matInput formControlName="address" rows="2"></textarea>
+          </mat-form-field>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Date de naissance</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="birth_date" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="studentForm.get('birth_date')?.hasError('required')">
+                La date de naissance est requise
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Lieu de naissance</mat-label>
+              <input matInput formControlName="birth_place" required>
+              <mat-error *ngIf="studentForm.get('birth_place')?.hasError('required')">
+                Le lieu de naissance est requis
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Genre</mat-label>
+            <mat-select formControlName="gender" required>
+              <mat-option value="M">Masculin</mat-option>
+              <mat-option value="F">Féminin</mat-option>
+            </mat-select>
+            <mat-error *ngIf="studentForm.get('gender')?.hasError('required')">
+              Le genre est requis
+            </mat-error>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Informations Parent -->
+      <mat-card class="form-section">
+        <mat-card-header>
+          <mat-card-title>Informations du Parent/Tuteur</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Nom du parent</mat-label>
+              <input matInput formControlName="parent_name" required>
+              <mat-error *ngIf="studentForm.get('parent_name')?.hasError('required')">
+                Le nom du parent est requis
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email du parent</mat-label>
+              <input matInput type="email" formControlName="parent_email" required>
+              <mat-error *ngIf="studentForm.get('parent_email')?.hasError('required')">
+                L'email du parent est requis
+              </mat-error>
+              <mat-error *ngIf="studentForm.get('parent_email')?.hasError('email')">
+                Format d'email invalide
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Téléphone du parent</mat-label>
+              <input matInput formControlName="parent_phone">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Profession</mat-label>
+              <input matInput formControlName="parent_profession">
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Lieu de travail</mat-label>
+            <input matInput formControlName="parent_workplace">
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading || studentForm.invalid">
+      <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+      {{ isEdit ? 'Modifier' : 'Créer' }}
+    </button>
+  </mat-dialog-actions>
+</form>

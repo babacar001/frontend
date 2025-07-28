@@ -1,0 +1,124 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Modifier' : 'Ajouter' }} une Note</h2>
+
+<form [formGroup]="gradeForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="form-content">
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Élève</mat-label>
+          <mat-select formControlName="student_id" required>
+            <mat-option *ngFor="let student of students" [value]="student.id">
+              {{ student.user.name }} - {{ student.classe.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="gradeForm.get('student_id')?.hasError('required')">
+            L'élève est requis
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Matière</mat-label>
+          <mat-select formControlName="subject_id" required>
+            <mat-option *ngFor="let subject of subjects" [value]="subject.id">
+              {{ subject.name }} ({{ subject.code }})
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="gradeForm.get('subject_id')?.hasError('required')">
+            La matière est requise
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Classe</mat-label>
+          <mat-select formControlName="class_id" required>
+            <mat-option *ngFor="let classe of classes" [value]="classe.id">
+              {{ classe.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="gradeForm.get('class_id')?.hasError('required')">
+            La classe est requise
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Période</mat-label>
+          <mat-select formControlName="period" required>
+            <mat-option *ngFor="let period of periods" [value]="period">
+              {{ period }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="gradeForm.get('period')?.hasError('required')">
+            La période est requise
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Type d'évaluation</mat-label>
+          <mat-select formControlName="grade_type" required>
+            <mat-option *ngFor="let type of gradeTypes" [value]="type">
+              {{ type }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="gradeForm.get('grade_type')?.hasError('required')">
+            Le type est requis
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput type="date" formControlName="date" required>
+          <mat-error *ngIf="gradeForm.get('date')?.hasError('required')">
+            La date est requise
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Note obtenue</mat-label>
+          <input matInput type="number" formControlName="value" step="0.25" min="0" required>
+          <mat-error *ngIf="gradeForm.get('value')?.hasError('required')">
+            La note est requise
+          </mat-error>
+          <mat-error *ngIf="gradeForm.get('value')?.hasError('min')">
+            La note doit être positive
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Note maximale</mat-label>
+          <input matInput type="number" formControlName="max_value" min="1" required>
+          <mat-error *ngIf="gradeForm.get('max_value')?.hasError('required')">
+            La note maximale est requise
+          </mat-error>
+          <mat-error *ngIf="gradeForm.get('max_value')?.hasError('min')">
+            Minimum 1
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="percentage-display" *ngIf="gradeForm.get('value')?.value && gradeForm.get('max_value')?.value">
+        <mat-chip [color]="percentage >= 50 ? 'primary' : 'warn'" selected>
+          {{ percentage | number:'1.1-1' }}%
+        </mat-chip>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Commentaire (optionnel)</mat-label>
+        <textarea matInput formControlName="comment" rows="3" placeholder="Commentaire sur la note..."></textarea>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading || gradeForm.invalid">
+      <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+      {{ isEdit ? 'Modifier' : 'Ajouter' }}
+    </button>
+  </mat-dialog-actions>
+</form>
