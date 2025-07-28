@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://laravelapischool.onrender.com/'
+  apiUrl: 'https://laravelapischool.onrender.com/api'
 };
