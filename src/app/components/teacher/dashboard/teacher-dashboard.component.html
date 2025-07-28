@@ -1,0 +1,76 @@
+<div class="teacher-dashboard">
+  <div class="dashboard-header">
+    <h1>Tableau de Bord Enseignant</h1>
+    <p *ngIf="currentUser">Bienvenue, {{ currentUser.name }}</p>
+  </div>
+
+  <div class="dashboard-content">
+    <!-- Actions rapides -->
+    <div class="quick-actions">
+      <mat-card class="action-card">
+        <mat-card-content>
+          <div class="action-content">
+            <mat-icon class="action-icon">grade</mat-icon>
+            <div class="action-info">
+              <h3>Saisir des Notes</h3>
+              <p>Ajouter ou modifier les notes de vos élèves</p>
+            </div>
+          </div>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" routerLink="/admin/grades">
+              Accéder
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="action-card">
+        <mat-card-content>
+          <div class="action-content">
+            <mat-icon class="action-icon">class</mat-icon>
+            <div class="action-info">
+              <h3>Mes Élèves</h3>
+              <p>Consulter la liste de vos élèves</p>
+            </div>
+          </div>
+          <mat-card-actions>
+            <button mat-raised-button color="accent" routerLink="/admin/students">
+              Voir
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Notes récentes -->
+    <mat-card class="recent-grades-card">
+      <mat-card-header>
+        <mat-card-title>Notes Récentes</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="loading" class="loading-container">
+          <mat-spinner></mat-spinner>
+        </div>
+
+        <div *ngIf="!loading && recentGrades.length === 0" class="no-data">
+          <mat-icon>grade</mat-icon>
+          <p>Aucune note saisie récemment</p>
+        </div>
+
+        <div *ngIf="!loading && recentGrades.length > 0" class="grades-list">
+          <div *ngFor="let grade of recentGrades" class="grade-item">
+            <div class="grade-info">
+              <h4>{{ grade.student?.user?.name }}</h4>
+              <p>{{ grade.subject?.name }} - {{ grade.grade_type }}</p>
+            </div>
+            <div class="grade-value">
+              <mat-chip [color]="grade.percentage >= 50 ? 'primary' : 'warn'" selected>
+                {{ grade.value }}/{{ grade.max_value }}
+              </mat-chip>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+<div class="app-container" *ngIf="isAuthenticated()">
+  <mat-toolbar color="primary" class="app-toolbar">
+    <button mat-icon-button (click)="toggleMenu()" class="menu-button">
+      <mat-icon>menu</mat-icon>
+    </button>
+    
+    <span class="app-title" (click)="navigateToHome()">{{ title }}</span>
+    
+    <span class="spacer"></span>
+    
+    <div class="user-menu" *ngIf="currentUser">
+      <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+        <mat-icon>account_circle</mat-icon>
+        <span>{{ currentUser.name }}</span>
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>person</mat-icon>
+          <span>Profil</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>settings</mat-icon>
+          <span>Paramètres</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Déconnexion</span>
+        </button>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" [opened]="isMenuOpen" class="sidenav">
+      <mat-nav-list>
+        <!-- Menu Admin -->
+        <div *ngIf="hasRole('admin')">
+          <h3 matSubheader>Administration</h3>
+          <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="active">
+            <mat-icon matListIcon>dashboard</mat-icon>
+            <span>Tableau de bord</span>
+          </a>
+          <a mat-list-item routerLink="/admin/students" routerLinkActive="active">
+            <mat-icon matListIcon>school</mat-icon>
+            <span>Élèves</span>
+          </a>
+          <a mat-list-item routerLink="/admin/teachers" routerLinkActive="active">
+            <mat-icon matListIcon>person</mat-icon>
+            <span>Enseignants</span>
+          </a>
+          <a mat-list-item routerLink="/admin/classes" routerLinkActive="active">
+            <mat-icon matListIcon>class</mat-icon>
+            <span>Classes</span>
+          </a>
+          <a mat-list-item routerLink="/admin/subjects" routerLinkActive="active">
+            <mat-icon matListIcon>book</mat-icon>
+            <span>Matières</span>
+          </a>
+          <a mat-list-item routerLink="/admin/grades" routerLinkActive="active">
+            <mat-icon matListIcon>grade</mat-icon>
+            <span>Notes</span>
+          </a>
+          <a mat-list-item routerLink="/admin/reports" routerLinkActive="active">
+            <mat-icon matListIcon>description</mat-icon>
+            <span>Bulletins</span>
+          </a>
+        </div>
+
+        <!-- Menu Enseignant -->
+        <div *ngIf="hasRole('teacher')">
+          <h3 matSubheader>Enseignant</h3>
+          <a mat-list-item routerLink="/teacher/dashboard" routerLinkActive="active">
+            <mat-icon matListIcon>dashboard</mat-icon>
+            <span>Tableau de bord</span>
+          </a>
+          <a mat-list-item routerLink="/admin/grades" routerLinkActive="active">
+            <mat-icon matListIcon>grade</mat-icon>
+            <span>Saisie des notes</span>
+          </a>
+          <a mat-list-item routerLink="/admin/students" routerLinkActive="active">
+            <mat-icon matListIcon>class</mat-icon>
+            <span>Mes élèves</span>
+          </a>
+        </div>
+
+        <!-- Menu Élève/Parent -->
+        <div *ngIf="hasRole('student') || hasRole('parent')">
+          <h3 matSubheader>Portail</h3>
+          <a mat-list-item routerLink="/portal/bulletins" routerLinkActive="active">
+            <mat-icon matListIcon>description</mat-icon>
+            <span>Bulletins</span>
+          </a>
+          <a mat-list-item routerLink="/portal/grades" routerLinkActive="active">
+            <mat-icon matListIcon>grade</mat-icon>
+            <span>Notes</span>
+          </a>
+        </div>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="main-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+<div class="login-container" *ngIf="!isAuthenticated()">
+  <router-outlet></router-outlet>
+</div>

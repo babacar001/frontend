@@ -1,0 +1,111 @@
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  .menu-button {
+    margin-right: 16px;
+  }
+
+  .app-title {
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .user-menu {
+    .user-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: white;
+
+      mat-icon:first-child {
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
+.sidenav-container {
+  flex: 1;
+  background-color: #fafafa;
+}
+
+.sidenav {
+  width: 280px;
+  background-color: white;
+  border-right: 1px solid #e0e0e0;
+
+  mat-nav-list {
+    padding-top: 0;
+
+    h3[matSubheader] {
+      color: #666;
+      font-weight: 600;
+      font-size: 14px;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+
+    a[mat-list-item] {
+      height: 48px;
+      color: #333;
+      border-radius: 0 24px 24px 0;
+      margin-right: 12px;
+      margin-bottom: 4px;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      &.active {
+        background-color: #e3f2fd;
+        color: #1976d2;
+
+        mat-icon {
+          color: #1976d2;
+        }
+      }
+
+      mat-icon[matListIcon] {
+        color: #666;
+        margin-right: 16px;
+      }
+
+      span {
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.main-content {
+  background-color: #fafafa;
+  min-height: 100%;
+}
+
+.login-container {
+  height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .sidenav {
+    width: 100%;
+  }
+
+  .user-button span {
+    display: none;
+  }
+}

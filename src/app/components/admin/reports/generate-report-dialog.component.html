@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>Générer un Bulletin</h2>
+
+<form [formGroup]="generateForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="form-content">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Élève</mat-label>
+        <mat-select formControlName="student_id" required>
+          <mat-option *ngFor="let student of students" [value]="student.id">
+            {{ student.user.name }} - {{ student.classe.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="generateForm.get('student_id')?.hasError('required')">
+          L'élève est requis
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Période</mat-label>
+        <mat-select formControlName="period" required>
+          <mat-option *ngFor="let period of periods" [value]="period">
+            {{ period }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="generateForm.get('period')?.hasError('required')">
+          La période est requise
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Année scolaire</mat-label>
+        <mat-select formControlName="academic_year" required>
+          <mat-option *ngFor="let year of academicYears" [value]="year">
+            {{ year }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="generateForm.get('academic_year')?.hasError('required')">
+          L'année scolaire est requise
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="generateForm.invalid">
+      Générer
+    </button>
+  </mat-dialog-actions>
+</form>

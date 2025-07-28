@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Modifier' : 'Créer' }} une Matière</h2>
+
+<form [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="form-content">
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Nom de la matière</mat-label>
+          <input matInput formControlName="name" placeholder="Ex: Mathématiques" required>
+          <mat-error *ngIf="subjectForm.get('name')?.hasError('required')">
+            Le nom est requis
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Code</mat-label>
+          <input matInput formControlName="code" placeholder="Ex: MATH" required>
+          <mat-error *ngIf="subjectForm.get('code')?.hasError('required')">
+            Le code est requis
+          </mat-error>
+          <mat-error *ngIf="subjectForm.get('code')?.hasError('maxlength')">
+            Maximum 10 caractères
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Coefficient</mat-label>
+          <input matInput type="number" formControlName="coefficient" step="0.5" min="0.5" max="10" required>
+          <mat-error *ngIf="subjectForm.get('coefficient')?.hasError('required')">
+            Le coefficient est requis
+          </mat-error>
+          <mat-error *ngIf="subjectForm.get('coefficient')?.hasError('min')">
+            Minimum 0.5
+          </mat-error>
+          <mat-error *ngIf="subjectForm.get('coefficient')?.hasError('max')">
+            Maximum 10
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Niveau</mat-label>
+          <mat-select formControlName="level" required>
+            <mat-option *ngFor="let level of levels" [value]="level">
+              {{ level }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="subjectForm.get('level')?.hasError('required')">
+            Le niveau est requis
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description (optionnel)</mat-label>
+        <textarea matInput formControlName="description" rows="3" placeholder="Description de la matière..."></textarea>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading || subjectForm.invalid">
+      <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+      {{ isEdit ? 'Modifier' : 'Créer' }}
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,64 @@
+<div class="subject-list-container">
+  <div class="header">
+    <h2>Gestion des Matières</h2>
+    <button mat-raised-button color="primary" (click)="openSubjectForm()">
+      <mat-icon>add</mat-icon>
+      Nouvelle Matière
+    </button>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <div class="filters">
+        <mat-form-field appearance="outline">
+          <mat-label>Rechercher</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Nom, code...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort class="full-width">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+            <td mat-cell *matCellDef="let subject">{{ subject.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="code">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+            <td mat-cell *matCellDef="let subject">
+              <mat-chip color="primary" selected>{{ subject.code }}</mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="coefficient">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Coefficient</th>
+            <td mat-cell *matCellDef="let subject">{{ subject.coefficient }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="level">
+            <th mat-header-cell *matHeaderCellDef>Niveau</th>
+            <td mat-cell *matCellDef="let subject">{{ subject.level }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let subject">
+              <button mat-icon-button (click)="openSubjectForm(subject)" matTooltip="Modifier">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteSubject(subject)" matTooltip="Supprimer">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

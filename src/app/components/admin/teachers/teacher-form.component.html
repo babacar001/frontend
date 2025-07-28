@@ -1,0 +1,87 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Modifier' : 'Créer' }} un Enseignant</h2>
+
+<form [formGroup]="teacherForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="form-content">
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Nom complet</mat-label>
+          <input matInput formControlName="name" required>
+          <mat-error *ngIf="teacherForm.get('name')?.hasError('required')">
+            Le nom est requis
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required>
+          <mat-error *ngIf="teacherForm.get('email')?.hasError('required')">
+            L'email est requis
+          </mat-error>
+          <mat-error *ngIf="teacherForm.get('email')?.hasError('email')">
+            Format d'email invalide
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Téléphone</mat-label>
+          <input matInput formControlName="phone">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Spécialisation</mat-label>
+          <input matInput formControlName="specialization" required>
+          <mat-error *ngIf="teacherForm.get('specialization')?.hasError('required')">
+            La spécialisation est requise
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Adresse</mat-label>
+        <textarea matInput formControlName="address" rows="2"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Date d'embauche</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="hire_date" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="teacherForm.get('hire_date')?.hasError('required')">
+          La date d'embauche est requise
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Matières enseignées</mat-label>
+        <mat-select formControlName="subject_ids" multiple required>
+          <mat-option *ngFor="let subject of subjects" [value]="subject.id">
+            {{ subject.name }} ({{ subject.code }})
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="teacherForm.get('subject_ids')?.hasError('required')">
+          Au moins une matière est requise
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Classes assignées (optionnel)</mat-label>
+        <mat-select formControlName="class_ids" multiple>
+          <mat-option *ngFor="let classe of classes" [value]="classe.id">
+            {{ classe.name }} - {{ classe.level }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading || teacherForm.invalid">
+      <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+      {{ isEdit ? 'Modifier' : 'Créer' }}
+    </button>
+  </mat-dialog-actions>
+</form>

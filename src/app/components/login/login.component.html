@@ -1,0 +1,45 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>Portail Scolaire</h1>
+      <p>Connectez-vous à votre compte</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="votre@email.com">
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error *ngIf="f['email'].invalid && f['email'].touched">
+          <span *ngIf="f['email'].errors?.['required']">L'email est requis</span>
+          <span *ngIf="f['email'].errors?.['email']">Format d'email invalide</span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mot de passe</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="f['password'].invalid && f['password'].touched">
+          <span *ngIf="f['password'].errors?.['required']">Le mot de passe est requis</span>
+          <span *ngIf="f['password'].errors?.['minlength']">Minimum 6 caractères</span>
+        </mat-error>
+      </mat-form-field>
+
+      <div class="error-message" *ngIf="error">
+        <mat-icon>error</mat-icon>
+        <span>{{ error }}</span>
+      </div>
+
+      <button mat-raised-button color="primary" type="submit" 
+              [disabled]="loading || loginForm.invalid" class="login-button">
+        <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+        <span *ngIf="!loading">Se connecter</span>
+        <span *ngIf="loading">Connexion...</span>
+      </button>
+    </form>
+
+  </div>
+</div>

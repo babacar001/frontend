@@ -1,0 +1,120 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Tableau de Bord Administrateur</h1>
+    <p>Vue d'ensemble de l'établissement scolaire</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!loading" class="dashboard-content">
+    <!-- Statistiques générales -->
+    <div class="stats-grid" *ngIf="stats">
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-content">
+            <div class="stat-icon students">
+              <mat-icon>school</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3>{{ stats.students_count }}</h3>
+              <p>Élèves</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-content">
+            <div class="stat-icon teachers">
+              <mat-icon>person</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3>{{ stats.teachers_count }}</h3>
+              <p>Enseignants</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-content">
+            <div class="stat-icon classes">
+              <mat-icon>class</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3>{{ stats.classes_count }}</h3>
+              <p>Classes</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-content">
+            <div class="stat-icon grades">
+              <mat-icon>grade</mat-icon>
+            </div>
+            <div class="stat-info">
+              <h3>{{ stats.grades_count }}</h3>
+              <p>Notes</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- Statistiques des classes -->
+      <mat-card class="class-stats-card">
+        <mat-card-header>
+          <mat-card-title>Statistiques par Classe</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="class-stats-list">
+            <div *ngFor="let classe of classStats" class="class-stat-item">
+              <div class="class-info">
+                <h4>{{ classe.name }}</h4>
+                <p>{{ classe.level }}</p>
+              </div>
+              <div class="class-metrics">
+                <div class="metric">
+                  <span class="metric-value">{{ classe.students_count }}/{{ classe.capacity }}</span>
+                  <span class="metric-label">Élèves</span>
+                </div>
+                <div class="metric">
+                  <span class="metric-value">{{ classe.average | number:'1.2-2' }}</span>
+                  <span class="metric-label">Moyenne</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Activité récente -->
+      <mat-card class="activity-card">
+        <mat-card-header>
+          <mat-card-title>Activité Récente</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="activity-list">
+            <div *ngFor="let activity of recentActivity" class="activity-item">
+              <div class="activity-icon" [ngClass]="getActivityColor(activity.type)">
+                <mat-icon>{{ getActivityIcon(activity.type) }}</mat-icon>
+              </div>
+              <div class="activity-content">
+                <p>{{ activity.message }}</p>
+                <span class="activity-date">{{ activity.date | date:'short' }}</span>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
