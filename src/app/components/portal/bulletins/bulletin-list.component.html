@@ -1,0 +1,76 @@
+<div class="bulletin-container">
+  <div class="header">
+    <h2>Mes Bulletins de Notes</h2>
+    <p *ngIf="currentUser?.roles.includes('parent')">
+      Consultez les bulletins de vos enfants
+    </p>
+    <p *ngIf="currentUser?.roles.includes('student')">
+      Consultez vos bulletins de notes
+    </p>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!loading && bulletins.length === 0" class="no-data">
+    <mat-icon>description</mat-icon>
+    <h3>Aucun bulletin disponible</h3>
+    <p>Les bulletins apparaîtront ici une fois générés par l'administration.</p>
+  </div>
+
+  <div *ngIf="!loading && bulletins.length > 0" class="bulletins-grid">
+    <mat-card *ngFor="let bulletin of bulletins" class="bulletin-card">
+      <mat-card-header>
+        <div mat-card-avatar class="bulletin-avatar">
+          <mat-icon>description</mat-icon>
+        </div>
+        <mat-card-title>{{ bulletin.period }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ bulletin.student.user.name }} - {{ bulletin.classe.name }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="bulletin-info">
+          <div class="info-item">
+            <span class="label">Année scolaire:</span>
+            <span class="value">{{ bulletin.academic_year }}</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="label">Moyenne générale:</span>
+            <span class="value average">{{ bulletin.general_average | number:'1.2-2' }}/20</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="label">Rang:</span>
+            <span class="value">{{ bulletin.rank }}</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="label">Mention:</span>
+            <mat-chip [color]="getMentionColor(bulletin.mention)" selected>
+              {{ bulletin.mention_text }}
+            </mat-chip>
+          </div>
+        </div>
+
+        <div class="appreciation" *ngIf="bulletin.appreciation">
+          <h4>Appréciation:</h4>
+          <p>{{ bulletin.appreciation }}</p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="downloadBulletin(bulletin)">
+          <mat-icon>download</mat-icon>
+          Télécharger PDF
+        </button>
+        <span class="generated-date">
+          Généré le {{ bulletin.generated_at | date:'short' }}
+        </span>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
